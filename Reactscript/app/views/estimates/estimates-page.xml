@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="onNavigatingTo" class="page">
+  <ActionBar title="Estimates" class="action-bar">
+    <NavigationButton visibility="collapsed" />
+    <ActionItem ios.position="right">
+      <Label text="&#xf0b0;" class="icon" />
+    </ActionItem>
+  </ActionBar>
+
+  <GridLayout>
+    <ActivityIndicator busy="{{ isLoading }}" />
+    
+    <ListView items="{{ estimates }}" itemTap="{{ onItemTap }}" separatorColor="transparent" 
+             visibility="{{ !isLoading ? 'visible' : 'collapsed' }}">
+      <ListView.itemTemplate>
+        <GridLayout class="list-item" rows="auto, auto, auto" columns="auto, *, auto">
+          <!-- Customer Icon and Name -->
+          <Label text="&#xf007;" class="icon-large text-blue-600" row="0" col="0" marginRight="12"/>
+          <Label text="{{ customerName }}" class="font-bold text-lg" row="0" col="1"/>
+          <Label text="{{ mechanicStatus }}" class="status-badge" 
+                 class="{{ mechanicStatus === 'confirmed' ? 'status-confirmed' : 'status-pending' }}"
+                 row="0" col="2"/>
+          
+          <!-- Address -->
+          <Label text="&#xf3c5;" class="icon text-gray-600" row="1" col="0" marginRight="12"/>
+          <Label text="{{ address }}" class="text-gray-600" textWrap="true" row="1" col="1" colSpan="2"/>
+          
+          <!-- Time and Total -->
+          <Label text="&#xf017;" class="icon text-gray-600" row="2" col="0" marginRight="12"/>
+          <Label text="{{ dateFormat }}" class="text-sm text-blue-600" row="2" col="1"/>
+          <Label text="{{ 'Rs. ' + totalAmount }}" class="text-sm font-bold" row="2" col="2"/>
+        </GridLayout>
+      </ListView.itemTemplate>
+    </ListView>
+  </GridLayout>
+</Page>

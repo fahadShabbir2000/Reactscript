@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="onNavigatingTo" class="page">
+  <ActionBar title="Edit Estimate" class="action-bar">
+    <NavigationButton text="Back" android.systemIcon="ic_menu_back" />
+  </ActionBar>
+
+  <GridLayout rows="*, auto">
+    <ScrollView row="0">
+      <StackLayout class="p-4">
+        <!-- Current Items Card -->
+        <GridLayout class="card" rows="auto, auto">
+          <Label text="&#xf07a; Current Items" class="text-xl font-bold mb-2" row="0"/>
+          <ListView items="{{ items }}" height="200" row="1" id="itemsList">
+            <ListView.itemTemplate>
+              <GridLayout columns="auto, *, auto, auto, auto" class="p-2" rows="auto, auto">
+                <Label text="&#xf07a;" class="icon text-gray-600" col="0" marginRight="8"/>
+                <Label text="{{ name }}" col="1"/>
+                <TextField text="{{ quantity }}" col="2" class="input text-center" keyboardType="number" width="60"/>
+                <Label text="{{ 'Rs. ' + price }}" col="3" class="mx-2 font-bold"/>
+                <Button text="&#xf1f8;" class="icon text-red-500" col="4" 
+                       tap="{{ $parents['ListView'].deleteItem, $parents['ListView'].deleteItem(id) }}"
+                       marginLeft="8"/>
+                <Label text="{{ '&#xf155; Total: Rs. ' + (price * quantity) }}" col="0" row="1"
+                       colSpan="5" class="text-right text-sm text-gray-600"/>
+              </GridLayout>
+            </ListView.itemTemplate>
+          </ListView>
+        </GridLayout>
+
+        <!-- Basket Card -->
+        <GridLayout class="card mt-4" rows="auto, auto">
+          <Label text="&#xf290; Basket Items" class="text-xl font-bold mb-2" row="0"/>
+          <ListView items="{{ basketItems }}" height="200" row="1" id="basketList">
+            <ListView.itemTemplate>
+              <GridLayout columns="auto, *, auto, auto" class="p-2">
+                <Label text="&#xf290;" class="icon text-gray-600" col="0" marginRight="8"/>
+                <Label text="{{ name }}" col="1"/>
+                <Label text="{{ 'Rs. ' + price }}" col="2" class="mx-2 font-bold"/>
+                <Button text="&#xf067;" class="icon text-green-500" col="3"
+                       tap="{{ $parents['ListView'].addToItems(id) }}"
+                       marginLeft="8"/>
+              </GridLayout>
+            </ListView.itemTemplate>
+          </ListView>
+        </GridLayout>
+
+        <!-- Total Card -->
+        <GridLayout class="card mt-4" rows="auto">
+          <Label text="{{ '&#xf155; Total Amount: Rs. ' + numberFormat }}"
+                 class="text-xl font-bold text-right"/>
+        </GridLayout>
+      </StackLayout>
+    </ScrollView>
+    
+    <Button row="1" text="&#xf0c7; Save Changes" tap="{{ saveChanges }}"
+            class="btn btn-primary m-4" isEnabled="{{ !isLoading }}"/>
+  </GridLayout>
+</Page>

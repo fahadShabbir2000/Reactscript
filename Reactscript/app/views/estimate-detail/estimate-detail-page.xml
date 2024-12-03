@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="onNavigatingTo" class="page">
+  <ActionBar title="Estimate Details" class="action-bar">
+    <NavigationButton text="Back" android.systemIcon="ic_menu_back" />
+  </ActionBar>
+
+  <GridLayout>
+    <ActivityIndicator busy="{{ isLoading }}" />
+    
+    <ScrollView visibility="{{ !isLoading ? 'visible' : 'collapsed' }}">
+      <StackLayout class="p-4">
+        <!-- Customer Info Card -->
+        <GridLayout class="card" rows="auto, auto, auto, auto" columns="auto, *, auto">
+          <Label text="&#xf007;" class="icon-large text-blue-600" row="0" col="0" marginRight="12"/>
+          <Label text="{{ estimate.customerName }}" class="text-2xl font-bold" row="0" col="1"/>
+          <Label text="{{ estimate.mechanicStatus }}" class="status-badge" row="0" col="2"
+                 class="{{ estimate.mechanicStatus === 'confirmed' ? 'status-confirmed' : 'status-pending' }}"/>
+          
+          <Label text="&#xf095;" class="icon text-gray-600" row="1" col="0" marginRight="12"/>
+          <Label text="{{ estimate.contactNumber }}" class="text-lg" row="1" col="1" colSpan="2"/>
+          
+          <Label text="&#xf3c5;" class="icon text-gray-600" row="2" col="0" marginRight="12"/>
+          <Label text="{{ estimate.address }}" class="text-gray-600" textWrap="true" row="2" col="1" colSpan="2"/>
+          
+          <!-- Action Buttons -->
+          <GridLayout rows="auto" columns="*, auto, auto" row="3" colSpan="3" marginTop="16">
+            <Button text="&#xf3c5; Open in Maps" tap="{{ openMaps }}" 
+                    class="btn btn-secondary" col="0"/>
+            <Button text="{{ isPlaying ? '&#xf04c; Stop' : '&#xf04b; Play' }}" 
+                    tap="{{ toggleVoiceNote }}" 
+                    class="btn btn-secondary" 
+                    visibility="{{ estimate.voiceNote ? 'visible' : 'collapsed' }}"
+                    col="1" marginLeft="8"/>
+            <Button text="&#xf1c1; PDF" 
+                    tap="{{ openPdf }}" 
+                    class="btn btn-secondary" 
+                    visibility="{{ estimate.pdfUrl ? 'visible' : 'collapsed' }}"
+                    col="2" marginLeft="8"/>
+          </GridLayout>
+        </GridLayout>
+        
+        <!-- Items Card -->
+        <GridLayout class="card" rows="auto, auto" marginTop="16">
+          <Label text="&#xf07a; Items" class="text-xl font-bold mb-2" row="0"/>
+          <ListView items="{{ items }}" height="200" row="1">
+            <ListView.itemTemplate>
+              <GridLayout columns="*, auto, auto" class="p-2" rows="auto, auto">
+                <Label text="{{ name }}" col="0"/>
+                <Label text="{{ quantity + ' x ' }}" col="1" class="mx-2"/>
+                <Label text="{{ 'Rs. ' + numberFormat }}" col="2" class="font-bold"/>
+              </GridLayout>
+            </ListView.itemTemplate>
+          </ListView>
+        </GridLayout>
+
+        <!-- Total Card -->
+        <GridLayout class="card" rows="auto" marginTop="16">
+          <Label text="{{ '&#xf07a; Total: Rs. ' + estimate.total }}"
+                 class="text-xl font-bold text-right"/>
+        </GridLayout>
+
+        <!-- Action Buttons -->
+        <StackLayout marginTop="16" visibility="{{ estimate.mechanicStatus === 'Pending' ? 'visible' : 'collapsed' }}">
+          <Button text="&#xf044; Edit Estimate" tap="{{ editEstimate }}" class="btn btn-primary"/>
+          <Button text="&#xf00c; Confirm Estimate" tap="{{ confirmEstimate }}" class="btn btn-success" marginTop="8"/>
+        </StackLayout>
+      </StackLayout>
+    </ScrollView>
+  </GridLayout>
+</Page>
